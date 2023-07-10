@@ -5,6 +5,8 @@ const logger = require("morgan");
 const cors = require("cors");
 const mongoose = require("mongoose");
 
+require("dotenv").config();
+
 const indexRouter = require("./routes/index");
 const usersRouter = require("./routes/users");
 
@@ -12,8 +14,13 @@ const { errorHandler } = require("./middleware/errorHandler");
 
 const app = express();
 
+const mongoUser = process.env.MONGO_USER;
+const mongoPassword = process.env.MONGO_PASSWORD;
+const mongoCluster = process.env.MONGO_CLUSTER;
+const mongoDatabase = process.env.MONGO_DATABASE;
+
 mongoose
-    .connect("mongodb://127.0.0.1:27017/myapp", {
+    .connect(`mongodb+srv://${mongoUser}:${mongoPassword}@${mongoCluster}/${mongoDatabase}?retryWrites=true&w=majority`, {
         useNewUrlParser: true,
         useUnifiedTopology: true,
     })
